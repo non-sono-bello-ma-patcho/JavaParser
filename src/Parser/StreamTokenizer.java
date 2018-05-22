@@ -24,7 +24,8 @@ public class StreamTokenizer implements Tokenizer {
 		final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 1
 		final String numRegEx = "(0|[1-9][0-9]*)"; // group 2
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
-		final String symbolRegEx = "\\+|\\*|=|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]";
+		final String symbolRegEx = "\\+|\\*|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]"; /*modified by me */
+        /* forse bisogna aggiungere qui la regex per le binary expr*/
 		regEx = identRegEx + "|" + numRegEx + "|" + skipRegEx + "|" + symbolRegEx;
 	}
 
@@ -32,6 +33,17 @@ public class StreamTokenizer implements Tokenizer {
 		keywords.put("for", FOR);
 		keywords.put("print", PRINT);
 		keywords.put("var", VAR);
+		/*parte aggiunta da me */
+		keywords.put("true",TRUE);
+		keywords.put("false",FALSE);
+		keywords.put("opt",OPT);
+		keywords.put("empty",EMPTY);
+		keywords.put("get",GET);
+		keywords.put("def",DEF);
+		keywords.put("if",IF);
+		keywords.put("else",ELSE);
+		keywords.put("do",DO);
+		keywords.put("while",WHILE);
 	}
 
 	static {
@@ -49,6 +61,9 @@ public class StreamTokenizer implements Tokenizer {
 		symbols.put("-", MINUS);
 		symbols.put("[", OPEN_LIST);
 		symbols.put("]", CLOSE_LIST);
+		/*parte aggiunta da me*/
+		symbols.put("==", EQUAL);
+		symbols.put("&&", AND);
 	}
 
 	public StreamTokenizer(Reader reader) {
