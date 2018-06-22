@@ -15,12 +15,12 @@ public class DoWhileStmt implements Stmt {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + block +  "}" + "while(" + exp + ")";
+        return getClass().getSimpleName() + "(" + block +  "," + exp + ")";
     }
 
     @Override
     public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitDoWhileStmt(block, exp);
+        return visitor.visitDoWhileStmt(exp, block);
     }
 
 }
