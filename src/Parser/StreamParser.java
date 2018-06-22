@@ -9,7 +9,7 @@ Prog ::= StmtSeq 'EOF'
  StmtSeq ::= Stmt (';' StmtSeq)?
  Stmt ::= 'var'? ID '=' Exp | 'print' Exp |  'for' ID ':' Exp '{' StmtSeq '}' | if (Exp) {StmtSeq} (else {StmtSeq})? | do {StmtSeq} while (Exp)
  ExpSeq ::= Exp (',' ExpSeq)?
- Exp ::= Add ('::' Exp)? | Exp && Exp | Exp == Exp | ! Exp | opt Exp | empty Exp | def Exp | get Exp  attenzione : aggiunta io -->|true |false|binaryExpr ( per questa farei una regex)
+ Exp ::= Add ('::' Exp)? | Exp && Exp | Exp == Exp | ! Exp | opt Exp | empty Exp | def Exp | get Exp |true |false|binaryExpr
  Add ::= Mul ('+' Mul)*
  Mul::= Atom ('*' Atom)*
  Atom ::= '-' Atom | '[' ExpSeq ']' | NUM | ID | '(' Exp ')'
