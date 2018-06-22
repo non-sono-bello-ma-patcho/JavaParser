@@ -72,11 +72,16 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitIfStmt(Exp exp, StmtSeq stmt) {
+		exp.accept(this);
+		stmt.accept(this);
 		return null;
 	}
 
 	@Override
 	public Type visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse) {
+		exp.accept(this);
+		stmtIf.accept(this);
+		stmtElse.accept(this);
 		return null;
 	}
 
