@@ -13,6 +13,8 @@ public interface Visitor<T> {
 
 	T visitForEachStmt(Ident ident, Exp exp, StmtSeq block);
 
+	T visitDoWhileStmt(StmtSeq block, Exp exp);
+
 	T visitIntLiteral(int value);
 
 	T visitListLiteral(ExpSeq exps);
