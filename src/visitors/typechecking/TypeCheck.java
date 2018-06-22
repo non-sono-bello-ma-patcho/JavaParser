@@ -54,6 +54,7 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitDoWhileStmt(StmtSeq block, Exp exp) {
+
 		return null;
 	}
 
@@ -66,6 +67,16 @@ public class TypeCheck implements Visitor<Type> {
 	@Override
 	public Type visitVarStmt(Ident ident, Exp exp) {
 		env.dec(ident, exp.accept(this));
+		return null;
+	}
+
+	@Override
+	public Type visitIfStmt(Exp exp, StmtSeq stmt) {
+		return null;
+	}
+
+	@Override
+	public Type visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse) {
 		return null;
 	}
 

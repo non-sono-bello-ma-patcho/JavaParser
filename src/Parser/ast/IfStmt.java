@@ -3,7 +3,7 @@ package Parser.ast;
 import static java.util.Objects.requireNonNull;
 import visitors.Visitor;
 
-public class IfStmt {
+public class IfStmt implements Stmt {
     private final Exp exp;
     private final StmtSeq block;
     private final StmtSeq elseStmt;

@@ -146,7 +146,7 @@ public class StreamParser implements Parser {
             consume(OPEN_BLOCK);
             StmtSeq Secondstmts = parseStmtSeq();
             consume(CLOSE_BLOCK);
-            return IfStmt(exp,Firststmts,Secondstmts); //TODO boolexp
+            return new IfStmt(exp,Firststmts,Secondstmts); //TODO boolexp
         }
         return new IfStmt(exp,Firststmts); //TODO: boolexp
     }
