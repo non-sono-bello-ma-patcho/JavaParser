@@ -48,4 +48,8 @@ public interface Visitor<T> {
 	T visitSingleStmt(Stmt stmt);
 
 	T visitVarStmt(Ident ident, Exp exp);
+
+	T visitIfStmt(Exp exp, StmtSeq stmt);
+
+	T visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse);
 }

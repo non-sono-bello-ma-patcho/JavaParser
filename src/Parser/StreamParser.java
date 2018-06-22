@@ -132,6 +132,24 @@ public class StreamParser implements Parser {
 		consume(CLOSE_BLOCK);
 		return new ForEachStmt(ident, exp, stmts);
 	}
+    /*ci vorrebbe la expr booleana*/
+	private IfStmt parseIfStmt() throws ParserException{
+	    consume(IF);
+	    consume(OPEN_PAR);
+	    Exp exp = parseExp(); //TODO: boolexp
+	    consume(CLOSE_PAR);
+        consume(OPEN_BLOCK);
+	    StmtSeq Firststmts = parseStmtSeq();
+        consume(CLOSE_BLOCK);
+        if (tokenizer.tokenType() == ELSE){
+            tryNext();
+            consume(OPEN_BLOCK);
+            StmtSeq Secondstmts = parseStmtSeq();
+            consume(CLOSE_BLOCK);
+            return IfStmt(exp,Firststmts,Secondstmts); //TODO boolexp
+        }
+        return new IfStmt(exp,Firststmts); //TODO: boolexp
+    }
 
 	private Exp parseExp() throws ParserException {
 		Exp exp = parseAdd();
