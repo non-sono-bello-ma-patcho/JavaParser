@@ -53,8 +53,11 @@ public class TypeCheck implements Visitor<Type> {
 	}
 
 	@Override
-	public Type visitDoWhileStmt(StmtSeq block, Exp exp) {
-
+	public Type visitDoWhileStmt(Exp exp, StmtSeq block) {
+		env.enterLevel(); // TODO
+		block.accept(this);
+		exp.accept(this);
+		env.exitLevel();
 		return null;
 	}
 
@@ -102,6 +105,12 @@ public class TypeCheck implements Visitor<Type> {
 	public Type visitAdd(Exp left, Exp right) {
 		checkBinOp(left, right, INT);
 		return INT;
+	}
+
+	@Override
+	public Type visitEquals(Exp left, Exp right) {
+		checkBinOp(left, right, left.accept(this)); // DIO PORCO :)
+		return null;
 	}
 
 	@Override

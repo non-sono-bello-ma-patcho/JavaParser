@@ -9,6 +9,8 @@ import Parser.ast.StmtSeq;
 public interface Visitor<T> {
 	T visitAdd(Exp left, Exp right);
 
+	T visitEquals(Exp left, Exp right);
+
 	T visitAnd(Exp left, Exp right);
 
 	T visitOr(Exp left, Exp right);
@@ -17,7 +19,7 @@ public interface Visitor<T> {
 
 	T visitForEachStmt(Ident ident, Exp exp, StmtSeq block);
 
-	T visitDoWhileStmt(StmtSeq block, Exp exp);
+	T visitDoWhileStmt(Exp exp, StmtSeq block);
 
 	T visitIntLiteral(int value);
 
