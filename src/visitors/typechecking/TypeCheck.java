@@ -53,6 +53,11 @@ public class TypeCheck implements Visitor<Type> {
 	}
 
 	@Override
+	public Type visitDoWhileStmt(StmtSeq block, Exp exp) {
+		return null;
+	}
+
+	@Override
 	public Type visitPrintStmt(Exp exp) {
 		exp.accept(this);
 		return null;
@@ -89,8 +94,25 @@ public class TypeCheck implements Visitor<Type> {
 	}
 
 	@Override
+	public Type visitAnd(Exp left, Exp right) {
+		checkBinOp(left, right, BOOL);
+		return BOOL;
+	}
+
+	@Override
+	public Type visitOr(Exp left, Exp right) {
+		checkBinOp(left, right, BOOL);
+		return BOOL;
+	}
+
+	@Override
 	public Type visitIntLiteral(int value) {
 		return INT;
+	}
+
+	@Override
+	public Type visitBoolLiteral(boolean value) {
+		return BOOL;
 	}
 
 	@Override
@@ -113,6 +135,11 @@ public class TypeCheck implements Visitor<Type> {
 	@Override
 	public Type visitSign(Exp exp) {
 		return INT.checkEqual(exp.accept(this));
+	}
+
+	@Override
+	public Type visitNot(Exp exp) {
+		return BOOL.checkEqual(exp.accept(this));
 	}
 
 	@Override
