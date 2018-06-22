@@ -109,7 +109,7 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitEquals(Exp left, Exp right) {
-		checkBinOp(left, right, left.accept(this)); // DIO PORCO :)
+		checkBinOp(left, right, left.accept(this));
 		return null;
 	}
 
