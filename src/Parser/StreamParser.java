@@ -111,6 +111,17 @@ public class StreamParser implements Parser {
 		return new AssignStmt(ident, parseExp());
 	}
 
+	private DoWhileStmt parseDoWhileStmt() throws  ParserException{
+		consume(DO);
+		consume(OPEN_BLOCK);
+		StmtSeq sq = parseStmtSeq();
+		consume(CLOSE_BLOCK);
+		consume(OPEN_PAR);
+		Exp e = parseExp(); // TODO: add boolExp
+		consume(CLOSE_PAR);
+		return new DoWhileStmt(e, sq);
+	}
+
 	private ForEachStmt parseForEachStmt() throws ParserException {
 		consume(FOR); // or tryNext();
 		Ident ident = parseIdent();
