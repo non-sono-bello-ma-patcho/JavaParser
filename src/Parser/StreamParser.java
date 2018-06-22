@@ -86,6 +86,10 @@ public class StreamParser implements Parser {
 			return parseAssignStmt();
 		case FOR:
 			return parseForEachStmt();
+         case IF:
+             return parseIfStmt();
+         case DO:
+             return parseDoWhileStmt();
 		}
 	}
 
