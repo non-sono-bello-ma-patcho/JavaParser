@@ -1,8 +1,6 @@
 package Parser;
 
 import static Parser.TokenType.*;
-import static visitors.typechecking.PrimtType.BOOL;
-
 import Parser.ast.*;
 
 /*
@@ -152,11 +150,17 @@ public class StreamParser implements Parser {
         return new IfStmt(exp,Firststmts); //TODO: boolexp
     }
 
-	private Exp parseExp() throws ParserException {
-		Exp exp = parseAdd();
-		if (tokenizer.tokenType() == PREFIX) {
-			tryNext();
-			exp = new Prefix(exp, parseExp());
+	private Exp parseExp() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
+		Exp exp = null;
+		if(tokenizer.tokenType() == NUM) {
+			exp = parseAdd();
+			if (tokenizer.tokenType() == PREFIX) {
+				tryNext();
+				exp = new Prefix(exp, parseExp());
+			}
+		}
+		else{
+			exp = parseOr();
 		}
 		return exp;
 	}
@@ -172,7 +176,7 @@ public class StreamParser implements Parser {
 
 	private Exp parseOr() throws ParserException {
 		Exp exp = parseMul();
-		while (tokenizer.tokenType() == AND) {
+		while (tokenizer.tokenType() == OR) {
 			tryNext();
 			exp = new Or(exp, parseAnd());
 		}
@@ -190,7 +194,7 @@ public class StreamParser implements Parser {
 
 	private Exp parseAnd() throws ParserException {
 		Exp exp = parseAtom();
-		while (tokenizer.tokenType() == OR) {
+		while (tokenizer.tokenType() == AND) {
 			tryNext();
 			exp = new And(exp, parseAtom());
 		}
