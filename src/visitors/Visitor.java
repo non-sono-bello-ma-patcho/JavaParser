@@ -43,6 +43,8 @@ public interface Visitor<T> {
 
 	T visitNot(Exp exp);
 
+	T visitGet(Exp exp);
+
 	T visitIdent(String name);
 
 	T visitSingleExp(Exp exp);

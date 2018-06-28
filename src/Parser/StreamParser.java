@@ -193,6 +193,8 @@ public class StreamParser implements Parser {
 			return parseList();
 		case OPEN_PAR:
 			return parseRoundPar();
+        case GET:
+            return parseGet();
 		}
 	}
 
@@ -226,6 +228,11 @@ public class StreamParser implements Parser {
 		return new ListLiteral(exps);
 	}
 
+	private get parseGet() throws ParserException{
+	    consume(GET);
+	    Exp exp = parseExp();
+	    return new get(exp);
+    }
 	private Exp parseRoundPar() throws ParserException {
 		consume(OPEN_PAR); // or tryNext();
 		Exp exp = parseExp();
