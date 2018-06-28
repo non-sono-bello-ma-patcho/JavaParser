@@ -19,6 +19,8 @@ public class TokenizerTest {
 					case NUM:
 						out.println("value " + t.intValue());
 						break;
+					case BOOLEAN:
+						out.println("value"+ t.boolValue());
 					case EOF:
 						out.println("end of stream");
 					default:

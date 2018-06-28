@@ -14,4 +14,6 @@ public interface Value {
 		throw new EvaluatorException("Expecting a list value");
 	}
 
+	default boolean asBool() { throw new EvaluatorException("Expecting a bool value");}
+
 }

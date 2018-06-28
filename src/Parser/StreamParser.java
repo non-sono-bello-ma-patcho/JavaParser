@@ -1,6 +1,7 @@
 package Parser;
 
 import static Parser.TokenType.*;
+import static visitors.typechecking.PrimtType.BOOL;
 
 import Parser.ast.*;
 
@@ -199,6 +200,12 @@ public class StreamParser implements Parser {
 		int val = tokenizer.intValue();
 		consume(NUM); // or tryNext();
 		return new IntLiteral(val);
+	}
+
+	private BoolLiteral ParseBool() throws ParserException{
+		boolean val = tokenizer.boolValue();
+		consume(BOOLEAN);
+		return  new BoolLiteral(val);
 	}
 
 	private Ident parseIdent() throws ParserException {

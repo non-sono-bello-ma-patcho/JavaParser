@@ -16,17 +16,20 @@ public class StreamTokenizer implements Tokenizer {
 	private TokenType tokenType;
 	private String tokenString;
 	private int intValue;
+	private boolean boolValue;
 	private final Scanner scanner;
 
 	static {
 		// remark: groups must correspond to the ordinal of the corresponding
 		// token type
 		final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 1
-		final String numRegEx = "(0|[1-9][0-9]*)"; // group 2
+		final String numRegEx = "(0|[1-9][0-9]*)"; // group 2   new regex or num regex???????
+        final String boolRegex = "(true) | (false)";
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
-		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]"; /*modified by me */
+		final String binaryRegEx = "(0[bB][0-1]*)"; //group 4  examples  0b0101010  0B10101010
+		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]";
         /* forse bisogna aggiungere qui la regex per le binary expr*/
-		regEx = identRegEx + "|" + numRegEx + "|" + skipRegEx + "|" + symbolRegEx;
+		regEx = identRegEx + "|" + numRegEx + "|" + boolRegex + "|" + skipRegEx + "|" + binaryRegEx + "|" + symbolRegEx;
 	}
 /*li
 operatori unari prefissi ! , opt , empty , def e get Tutti gli operatori unari prefissi hanno la precedenza sugli operatori
@@ -38,8 +41,8 @@ binari infissi.*/
 		keywords.put("print", PRINT);
 		keywords.put("var", VAR);
 		/*parte aggiunta da me */
-		keywords.put("true",TRUE);
-		keywords.put("false",FALSE);
+		keywords.put("true",BOOLEAN); // TODO: check bin operation (typecheck)
+		keywords.put("false",BOOLEAN); // TODO: same thing as above
 		keywords.put("opt",OPT);
 		keywords.put("empty",EMPTY);
 		keywords.put("get",GET);
@@ -135,6 +138,12 @@ binari infissi.*/
 	public int intValue() {
 		checkValidToken(NUM);
 		return intValue;
+	}
+
+	@Override
+    public boolean boolValue(){
+	    checkValidToken(BOOLEAN);
+	    return boolValue;
 	}
 
 	@Override
