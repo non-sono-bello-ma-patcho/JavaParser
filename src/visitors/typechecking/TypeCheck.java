@@ -88,6 +88,11 @@ public class TypeCheck implements Visitor<Type> {
 		return null;
 	}
 
+	@Override
+	public Type visitDef(Exp exp) {
+		return null;
+	}
+
 	// static semantics for sequences of statements
 	// no value returned by the visitor
 

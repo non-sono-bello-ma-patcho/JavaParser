@@ -54,4 +54,6 @@ public interface Visitor<T> {
 	T visitIfStmt(Exp exp, StmtSeq stmt);
 
 	T visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse);
+
+    T visitDef(Exp exp);
 }
