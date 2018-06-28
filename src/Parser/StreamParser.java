@@ -183,6 +183,10 @@ public class StreamParser implements Parser {
 		switch (tokenizer.tokenType()) {
 		default:
 			unexpectedTokenError();
+		case BINARY:
+			return parseBin();
+		case BOOLEAN:
+			return parseBool();
 		case NUM:
 			return parseNum();
 		case IDENT:
@@ -196,10 +200,21 @@ public class StreamParser implements Parser {
 		}
 	}
 
+	private BinaryLiteral parseBin() throws ParserException { //TODO: verificare che tutta la parte sul parsing dei numeri binari sia corretta;
+		int val = tokenizer.binValue();
+		return new BinaryLiteral(val);
+	}
+
 	private IntLiteral parseNum() throws ParserException {
 		int val = tokenizer.intValue();
 		consume(NUM); // or tryNext();
 		return new IntLiteral(val);
+	}
+
+	private BoolLiteral parseBool() throws ParserException {
+		boolean val = tokenizer.boolValue();
+		consume(BOOLEAN);
+		return new BoolLiteral(val);
 	}
 
 	private BoolLiteral ParseBool() throws ParserException{

@@ -17,6 +17,7 @@ public class StreamTokenizer implements Tokenizer {
 	private String tokenString;
 	private int intValue;
 	private boolean boolValue;
+	private int binValue;
 	private final Scanner scanner;
 
 	static {
@@ -31,7 +32,7 @@ public class StreamTokenizer implements Tokenizer {
         /* forse bisogna aggiungere qui la regex per le binary expr*/
 		regEx = identRegEx + "|" + numRegEx + "|" + boolRegex + "|" + skipRegEx + "|" + binaryRegEx + "|" + symbolRegEx;
 	}
-/*li
+/*
 operatori unari prefissi ! , opt , empty , def e get Tutti gli operatori unari prefissi hanno la precedenza sugli operatori
 binari infissi.*/
 
@@ -90,6 +91,12 @@ binari infissi.*/
 			intValue = Integer.parseInt(tokenString);
 			return;
 		}
+		if (scanner.group(BINARY.ordinal()) != null) { // NUM
+			tokenType = BINARY;
+			binValue = Integer.parseInt(tokenString.substring(1), 2);
+			return;
+		}
+
 		if (scanner.group(SKIP.ordinal()) != null) { // SKIP
 			tokenType = SKIP;
 			return;
@@ -144,6 +151,12 @@ binari infissi.*/
     public boolean boolValue(){
 	    checkValidToken(BOOLEAN);
 	    return boolValue;
+	}
+
+	@Override
+	public int binValue() {
+		checkValidToken(BINARY);
+		return binValue;
 	}
 
 	@Override
