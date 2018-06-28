@@ -1,8 +1,6 @@
 package Parser;
 
 import static Parser.TokenType.*;
-import static visitors.typechecking.PrimtType.BOOL;
-
 import Parser.ast.*;
 
 /*
@@ -152,11 +150,17 @@ public class StreamParser implements Parser {
         return new IfStmt(exp,Firststmts); //TODO: boolexp
     }
 
-	private Exp parseExp() throws ParserException {
-		Exp exp = parseAdd();
-		if (tokenizer.tokenType() == PREFIX) {
-			tryNext();
-			exp = new Prefix(exp, parseExp());
+	private Exp parseExp() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
+		Exp exp = null;
+		if(tokenizer.tokenType() == NUM) {
+			exp = parseAdd();
+			if (tokenizer.tokenType() == PREFIX) {
+				tryNext();
+				exp = new Prefix(exp, parseExp());
+			}
+		}
+		else{
+			exp = parseOr();
 		}
 		return exp;
 	}
@@ -170,6 +174,15 @@ public class StreamParser implements Parser {
 		return exp;
 	}
 
+	private Exp parseOr() throws ParserException {
+		Exp exp = parseMul();
+		while (tokenizer.tokenType() == OR) {
+			tryNext();
+			exp = new Or(exp, parseAnd());
+		}
+		return exp;
+	}
+
 	private Exp parseMul() throws ParserException {
 		Exp exp = parseAtom();
 		while (tokenizer.tokenType() == TIMES) {
@@ -179,10 +192,21 @@ public class StreamParser implements Parser {
 		return exp;
 	}
 
+	private Exp parseAnd() throws ParserException {
+		Exp exp = parseAtom();
+		while (tokenizer.tokenType() == AND) {
+			tryNext();
+			exp = new And(exp, parseAtom());
+		}
+		return exp;
+	}
+
 	private Exp parseAtom() throws ParserException {
 		switch (tokenizer.tokenType()) {
 		default:
 			unexpectedTokenError();
+		case BOOLEAN:
+			return parseBool();
 		case NUM:
 			return parseNum();
 		case IDENT:
@@ -204,10 +228,10 @@ public class StreamParser implements Parser {
 		return new IntLiteral(val);
 	}
 
-	private BoolLiteral ParseBool() throws ParserException{
+	private BoolLiteral parseBool() throws ParserException {
 		boolean val = tokenizer.boolValue();
 		consume(BOOLEAN);
-		return  new BoolLiteral(val);
+		return new BoolLiteral(val);
 	}
 
 	private Ident parseIdent() throws ParserException {

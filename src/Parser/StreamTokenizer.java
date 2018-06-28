@@ -26,12 +26,12 @@ public class StreamTokenizer implements Tokenizer {
 		final String numRegEx = "(0|[1-9][0-9]*)"; // group 2   new regex or num regex???????
         final String boolRegex = "(true) | (false)";
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
-		final String binaryRegEx = "(0[bB][0-1]*)"; //group 4  examples  0b0101010  0B10101010
+		final String binaryRegEx = "(0[bB][0-1]+)"; //group 4  examples  0b0101010  0B10101010
 		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]";
         /* forse bisogna aggiungere qui la regex per le binary expr*/
 		regEx = identRegEx + "|" + numRegEx + "|" + boolRegex + "|" + skipRegEx + "|" + binaryRegEx + "|" + symbolRegEx;
 	}
-/*li
+/*
 operatori unari prefissi ! , opt , empty , def e get Tutti gli operatori unari prefissi hanno la precedenza sugli operatori
 binari infissi.*/
 
@@ -88,6 +88,16 @@ binari infissi.*/
 		if (scanner.group(NUM.ordinal()) != null) { // NUM
 			tokenType = NUM;
 			intValue = Integer.parseInt(tokenString);
+			return;
+		}
+		if (scanner.group(BINARY.ordinal()) != null) { // NUM
+			tokenType = NUM;
+			intValue = Integer.parseInt(tokenString.substring(2), 2);
+			return;
+		}
+		if (scanner.group(BOOLEAN.ordinal()) != null) { // NUM
+			tokenType = BOOLEAN;
+			boolValue = Boolean.parseBoolean(tokenString);
 			return;
 		}
 		if (scanner.group(SKIP.ordinal()) != null) { // SKIP

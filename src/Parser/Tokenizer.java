@@ -15,4 +15,5 @@ public interface Tokenizer extends AutoCloseable {
 	public void close() throws TokenizerException;
 
     boolean boolValue();
+
 }

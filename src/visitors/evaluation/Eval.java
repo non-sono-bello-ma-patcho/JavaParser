@@ -107,23 +107,17 @@ public class Eval implements Visitor<Value> {
 
 	@Override
 	public Value visitEquals(Exp left, Exp right) {
-		if(left.accept(this).equals(right.accept(this)))
-			return new BoolValue(true);
-		return new BoolValue(false);
+		return new BoolValue(left.accept(this).equals(right.accept(this)));
 	}
 
 	@Override
 	public Value visitAnd(Exp left, Exp right) {
-		if(left.accept(this).equals(true) && right.accept(this).equals(true))
-			return new BoolValue(true);
-		return new BoolValue(false);
+		return new BoolValue(left.accept(this).equals(true) && right.accept(this).equals(true));
 	}
 
 	@Override
 	public Value visitOr(Exp left, Exp right) {
-		if(left.accept(this).equals(true) || right.accept(this).equals(true))
-			return new BoolValue(true);
-		return new BoolValue(false);
+		return new BoolValue(left.accept(this).equals(true) || right.accept(this).equals(true));
 	}
 
 	@Override
