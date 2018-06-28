@@ -170,6 +170,15 @@ public class StreamParser implements Parser {
 		return exp;
 	}
 
+	private Exp parseOr() throws ParserException {
+		Exp exp = parseMul();
+		while (tokenizer.tokenType() == AND) {
+			tryNext();
+			exp = new Or(exp, parseAnd());
+		}
+		return exp;
+	}
+
 	private Exp parseMul() throws ParserException {
 		Exp exp = parseAtom();
 		while (tokenizer.tokenType() == TIMES) {
@@ -179,12 +188,19 @@ public class StreamParser implements Parser {
 		return exp;
 	}
 
+	private Exp parseAnd() throws ParserException {
+		Exp exp = parseAtom();
+		while (tokenizer.tokenType() == OR) {
+			tryNext();
+			exp = new And(exp, parseAtom());
+		}
+		return exp;
+	}
+
 	private Exp parseAtom() throws ParserException {
 		switch (tokenizer.tokenType()) {
 		default:
 			unexpectedTokenError();
-		case BINARY:
-			return parseBin();
 		case BOOLEAN:
 			return parseBool();
 		case NUM:
@@ -200,11 +216,6 @@ public class StreamParser implements Parser {
 		}
 	}
 
-	private BinaryLiteral parseBin() throws ParserException { //TODO: verificare che tutta la parte sul parsing dei numeri binari sia corretta;
-		int val = tokenizer.binValue();
-		return new BinaryLiteral(val);
-	}
-
 	private IntLiteral parseNum() throws ParserException {
 		int val = tokenizer.intValue();
 		consume(NUM); // or tryNext();
@@ -215,12 +226,6 @@ public class StreamParser implements Parser {
 		boolean val = tokenizer.boolValue();
 		consume(BOOLEAN);
 		return new BoolLiteral(val);
-	}
-
-	private BoolLiteral ParseBool() throws ParserException{
-		boolean val = tokenizer.boolValue();
-		consume(BOOLEAN);
-		return  new BoolLiteral(val);
 	}
 
 	private Ident parseIdent() throws ParserException {
