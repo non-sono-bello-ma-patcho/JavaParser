@@ -1,7 +1,5 @@
 package visitors.typechecking;
 
-import Parser.ast.OptLiteral;
-
 public interface Type {
 	default Type checkEqual(Type found) throws TypecheckerException {
 		if (!equals(found))

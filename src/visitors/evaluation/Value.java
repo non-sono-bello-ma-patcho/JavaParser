@@ -1,6 +1,5 @@
 package visitors.evaluation;
 
-import Parser.ast.OptLiteral;
 
 public interface Value {
 	/* default conversion methods */
@@ -18,6 +17,6 @@ public interface Value {
 
 	default boolean asBool() { throw new EvaluatorException("Expecting a bool value");}
 
-	default OptLiteral asOpt(){ throw new EvaluatorException("Expecting an Opt value");}
+	default OptValue asOpt(){ throw new EvaluatorException("Expecting an Opt value");}
 
 }
