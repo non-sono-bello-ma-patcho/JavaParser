@@ -17,7 +17,6 @@ Prog ::= StmtSeq 'EOF'
 */
 
 public class StreamParser implements Parser {
-
 	private final Tokenizer tokenizer;
 
 	private void tryNext() throws ParserException {
@@ -225,6 +224,12 @@ public class StreamParser implements Parser {
 		case DEF:
 			return parseDef();
 		}
+	}
+
+	private Equals parseEqual() throws ParserException {
+		Exp sx = parseExp();
+		consume(EQUAL);
+		return new Equals(sx, parseExp());
 	}
 
 	private IntLiteral parseNum() throws ParserException {

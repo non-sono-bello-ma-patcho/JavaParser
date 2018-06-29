@@ -25,7 +25,7 @@ public class StreamTokenizer implements Tokenizer {
 		// remark: groups must correspond to the ordinal of the corresponding
 		// token type
 		final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 1
-		final String numRegEx = "(0[bB][01]+) | ([1-9][0-9]*|0)"; // group 2   new regex or num regex???????
+		final String numRegEx = "(0[bB][01]+|[1-9][0-9]*|0)"; // group 2
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
 		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]"; //4
         /* forse bisogna aggiungere qui la regex per le binary expr*/
@@ -80,8 +80,6 @@ binari infissi.*/
 	private void checkType() {
 		tokenString = scanner.group();
 
-		System.err.println("Tokenstring is: "+tokenString+"Tokentype is: "+symbols.get(tokenString));
-
 		if (scanner.group(IDENT.ordinal()) != null) { // IDENT or a keyword
 			tokenType = keywords.get(tokenString);
 			if (tokenType == null)
@@ -93,7 +91,7 @@ binari infissi.*/
 		if (scanner.group(NUM.ordinal()) != null) { // NUM
 			tokenType = NUM;
 
-			intValue = Integer.parseInt(base()==2?tokenString : tokenString.substring(2), base());
+			intValue = Integer.parseInt(base()==2?tokenString.substring(2) : tokenString, base());
 			return;
 		}
 
