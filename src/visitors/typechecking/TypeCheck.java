@@ -90,7 +90,8 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitDef(Exp exp) {
-		return null;
+		exp.accept(this).checkOpt();
+		return BOOL;
 	}
 
 	@Override

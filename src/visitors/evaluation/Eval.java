@@ -9,6 +9,7 @@ import Parser.ast.SimpleIdent;
 import Parser.ast.Stmt;
 import Parser.ast.StmtSeq;
 import visitors.Visitor;
+import visitors.typechecking.Type;
 
 public class Eval implements Visitor<Value> {
 
@@ -80,6 +81,18 @@ public class Eval implements Visitor<Value> {
 		else stmtElse.accept(this);
 
 		return null;
+	}
+
+	@Override
+	public Value visitDef(Exp exp) {
+		return new BoolValue(!exp.accept(this).asOpt().isEmpty());
+	}
+
+	@Override
+	public Value visitEmpty(Exp exp) {
+		OptlValue ov = new OptlValue(exp.accept(this).asOpt());
+		ov.
+		return ;
 	}
 
 	// dynamic semantics for sequences of statements
@@ -157,8 +170,19 @@ public class Eval implements Visitor<Value> {
 	}
 
 	@Override
+	public Value visitGet(Exp exp) {
+		Value val = exp.accept(this);
+		return null;
+	}
+
+	@Override
 	public Value visitIdent(String name) {
 		return env.lookup(new SimpleIdent(name));
+	}
+
+	@Override
+	public Value visitOpt(Exp exp) {
+		return null;
 	}
 
 	// dynamic semantics of sequences of expressions
