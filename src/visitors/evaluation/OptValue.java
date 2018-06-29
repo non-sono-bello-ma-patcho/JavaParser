@@ -12,7 +12,8 @@ public class OptValue  implements Value{
     }
 
     public OptValue(OptValue opt) {
-        this.value = opt.getValue();
+        this.value = opt.value;
+        this.empty = opt.empty;
 
     }
 
@@ -33,8 +34,8 @@ public class OptValue  implements Value{
             return true;
         if (!(obj instanceof OptValue))
             return false;
-        return (this.empty==true && ((OptValue)obj).empty==true)||(value.equals(((OptValue) obj).value) &&(this.empty==false
-                && ((OptValue)obj).empty==false));
+        return (this.empty && ((OptValue)obj).empty)||(value.equals(((OptValue) obj).value) &&(this.empty
+                && !((OptValue)obj).empty));
     }
 
     @Override

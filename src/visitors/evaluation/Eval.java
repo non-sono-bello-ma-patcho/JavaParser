@@ -89,9 +89,9 @@ public class Eval implements Visitor<Value> {
 
 	@Override
 	public Value visitEmpty(Exp exp) {
-		OptlValue ov = new OptlValue(exp.accept(this).asOpt());
-		ov.
-		return ;
+		OptValue ov = new OptValue(exp.accept(this).asOpt());
+		ov.setEmpty(true);
+		return ov;
 	}
 
 	// dynamic semantics for sequences of statements
@@ -124,12 +124,12 @@ public class Eval implements Visitor<Value> {
 
 	@Override
 	public Value visitAnd(Exp left, Exp right) {
-		return new BoolValue(left.accept(this).equals(true) && right.accept(this).equals(true));
+		return new BoolValue(left.accept(this).asBool() && right.accept(this).asBool());
 	}
 
 	@Override
 	public Value visitOr(Exp left, Exp right) {
-		return new BoolValue(left.accept(this).equals(true) || right.accept(this).equals(true));
+		return new BoolValue(left.accept(this).asBool() || right.accept(this).asBool());
 	}
 
 	@Override
