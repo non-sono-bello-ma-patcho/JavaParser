@@ -93,6 +93,13 @@ public class TypeCheck implements Visitor<Type> {
 		return null;
 	}
 
+	@Override
+	public Type visitEmpty(Exp exp) {
+		Type type = exp.accept(this);
+		type.checkOpt();
+		return type;
+	}
+
 	// static semantics for sequences of statements
 	// no value returned by the visitor
 
@@ -180,7 +187,7 @@ public class TypeCheck implements Visitor<Type> {
 	}
 	
 	@Override
-	public Type visitOpt(Exp exp){ return new OpType(exp.accept(this));}
+	public Type visitOpt(Exp exp){ return new OptType(exp.accept(this));}
 
 	@Override
 	public Type visitIdent(String name) {

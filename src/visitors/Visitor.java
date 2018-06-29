@@ -60,4 +60,6 @@ public interface Visitor<T> {
 	T visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse);
 
     T visitDef(Exp exp);
+
+    T visitEmpty(Exp exp);
 }
