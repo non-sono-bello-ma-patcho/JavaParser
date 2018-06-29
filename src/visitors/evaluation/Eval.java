@@ -49,7 +49,7 @@ public class Eval implements Visitor<Value> {
 	@Override
 	public Value visitDoWhileStmt(Exp exp, StmtSeq block) {
 		do{
-		    block.accept(this);
+		    nestNdo(block);
         }while(exp.accept(this).asBool());
 		return null;
 	}
@@ -197,6 +197,12 @@ public class Eval implements Visitor<Value> {
 	@Override
 	public Value visitMoreExp(Exp first, ExpSeq rest) {
 		return new ListValue(first.accept(this), rest.accept(this).asList());
+	}
+
+	private void nestNdo(StmtSeq block){
+		env.enterLevel();
+		block.accept(this);
+		env.exitLevel();
 	}
 
 }

@@ -115,10 +115,8 @@ public class StreamParser implements Parser {
 		consume(OPEN_BLOCK);
 		StmtSeq sq = parseStmtSeq();
 		consume(CLOSE_BLOCK);
-		consume(OPEN_PAR);
-		Exp e = parseExp(); // TODO: add boolExp
-		consume(CLOSE_PAR);
-		return new DoWhileStmt(e, sq);
+		consume(WHILE);
+		return new DoWhileStmt(parseRoundPar(), sq);
 	}
 
 	private ForEachStmt parseForEachStmt() throws ParserException {
@@ -150,23 +148,22 @@ public class StreamParser implements Parser {
         return new IfStmt(exp,Firststmts); //TODO: boolexp
     }
 
+    private Exp parsePrefix() throws ParserException{
+	    Exp e = parseAdd();
+	    while(tokenizer.tokenType() == PREFIX){
+	        tryNext();
+	        e = new Prefix(e, parseAdd());
+        }
+	    return e;
+    }
+
 	private Exp parseExp() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
-		Exp exp = null;
-		if(tokenizer.tokenType() == NUM) {
-            System.err.println("token dopo trynext = "+ tokenizer.tokenString());
-            exp = parseAdd();
-            tryNext();
-            if(tokenizer.tokenType() == EQUAL)
-                parseEqual();
-            else if(tokenizer.tokenType() == PREFIX) {
-                tryNext();
-                exp = new Prefix(exp, parseExp());
-            }
-		}
-		else{
-			exp = parseOr();
-		}
-		return exp;
+        Exp exp = parseEqual();
+        while (tokenizer.tokenType() == AND) {
+            consume(AND);
+            exp = new And(exp, parseExp());
+        }
+        return exp;
 	}
 
 	private Exp parseAdd() throws ParserException {
@@ -178,29 +175,11 @@ public class StreamParser implements Parser {
 		return exp;
 	}
 
-	private Exp parseOr() throws ParserException {
-		Exp exp = parseMul();
-		while (tokenizer.tokenType() == OR) {
-			tryNext();
-			exp = new Or(exp, parseAnd());
-		}
-		return exp;
-	}
-
 	private Exp parseMul() throws ParserException {
 		Exp exp = parseAtom();
 		while (tokenizer.tokenType() == TIMES) {
 			tryNext();
 			exp = new Mul(exp, parseAtom());
-		}
-		return exp;
-	}
-
-	private Exp parseAnd() throws ParserException {
-		Exp exp = parseAtom();
-		while (tokenizer.tokenType() == AND) {
-			tryNext();
-			exp = new And(exp, parseAtom());
 		}
 		return exp;
 	}
@@ -245,10 +224,14 @@ public class StreamParser implements Parser {
         return new Empty(parseExp());
     }
 
-	private Equals parseEqual() throws ParserException {
-		Exp sx = parseExp();
-		consume(EQUAL);
-		return new Equals(sx, parseExp());
+	private Exp parseEqual() throws ParserException {
+		Exp sx = parsePrefix();
+		if(tokenizer.tokenType()==EQUAL) {
+            consume(EQUAL);
+            System.err.println("ParseEqual: " + sx.toString());
+            return new Equals(sx, parsePrefix());
+        }
+        return sx;
 	}
 
 	private IntLiteral parseNum() throws ParserException {

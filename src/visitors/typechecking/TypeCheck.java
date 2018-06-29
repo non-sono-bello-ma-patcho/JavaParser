@@ -56,8 +56,8 @@ public class TypeCheck implements Visitor<Type> {
 	public Type visitDoWhileStmt(Exp exp, StmtSeq block) {
 		env.enterLevel(); // TODO
 		block.accept(this);
-		exp.accept(this);
 		env.exitLevel();
+		exp.accept(this);
 		return null;
 	}
 
@@ -76,15 +76,21 @@ public class TypeCheck implements Visitor<Type> {
 	@Override
 	public Type visitIfStmt(Exp exp, StmtSeq stmt) {
 		exp.accept(this);
+		env.enterLevel();
 		stmt.accept(this);
+		env.exitLevel();
 		return null;
 	}
 
 	@Override
 	public Type visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse) {
 		exp.accept(this);
+		env.enterLevel();
 		stmtIf.accept(this);
+		env.exitLevel();
+		env.enterLevel();
 		stmtElse.accept(this);
+		env.exitLevel();
 		return null;
 	}
 
@@ -128,7 +134,7 @@ public class TypeCheck implements Visitor<Type> {
 	@Override
 	public Type visitEquals(Exp left, Exp right) {
 		checkBinOp(left, right, left.accept(this)); // si può implementare come unario?
-		return null;
+		return BOOL;
 	}
 
 	@Override
