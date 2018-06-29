@@ -238,6 +238,11 @@ public class StreamParser implements Parser {
         return new Opt(parseExp());
     }
 
+    private Def parseDef() throws ParserException {
+	    consume(DEF);
+	    return new Def(parseExp());
+    }
+
 	private BoolLiteral parseBool() throws ParserException {
 		boolean val = tokenizer.boolValue();
 		consume(BOOLEAN);
