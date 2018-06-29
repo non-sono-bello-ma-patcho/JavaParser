@@ -71,6 +71,7 @@ binari infissi.*/
 		/*parte aggiunta da me*/
 		symbols.put("==", EQUAL);
 		symbols.put("&&", AND);
+		symbols.put("!", NOT);
 	}
 
 	public StreamTokenizer(Reader reader) {
