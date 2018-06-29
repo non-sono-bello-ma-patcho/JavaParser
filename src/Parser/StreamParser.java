@@ -153,16 +153,14 @@ public class StreamParser implements Parser {
 	private Exp parseExp() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
 		Exp exp = null;
 		if(tokenizer.tokenType() == NUM) {
-		    tryNext();
-            if(tokenizer.tokenType() == EQUAL) {
+            System.err.println("token dopo trynext = "+ tokenizer.tokenString());
+            exp = parseAdd();
+            tryNext();
+            if(tokenizer.tokenType() == EQUAL)
                 parseEqual();
-            }
-		    else {
-                exp = parseAdd();
-                if (tokenizer.tokenType() == PREFIX) {
-                    tryNext();
-                    exp = new Prefix(exp, parseExp());
-                }
+            else if(tokenizer.tokenType() == PREFIX) {
+                tryNext();
+                exp = new Prefix(exp, parseExp());
             }
 		}
 		else{
