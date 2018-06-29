@@ -47,6 +47,8 @@ public interface Visitor<T> {
 
 	T visitIdent(String name);
 
+	T visitOpt(Exp exp);
+
 	T visitSingleExp(Exp exp);
 
 	T visitSingleStmt(Stmt stmt);

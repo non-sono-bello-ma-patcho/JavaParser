@@ -1,5 +1,7 @@
 package Parser;
 
+import visitors.evaluation.Value;
+
 import static Parser.TokenType.*;
 
 import java.io.Reader;

@@ -174,6 +174,10 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitGet(Exp exp){ return null;} //TODO
+
+	@Override
+	public Type visitOpt(Exp exp){ return null;}
+
 	@Override
 	public Type visitIdent(String name) {
 		return env.lookup(new SimpleIdent(name));

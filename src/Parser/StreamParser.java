@@ -3,6 +3,8 @@ package Parser;
 import static Parser.TokenType.*;
 import Parser.ast.*;
 
+import java.io.IOException;
+
 /*
 Prog ::= StmtSeq 'EOF'
  StmtSeq ::= Stmt (';' StmtSeq)?
@@ -219,6 +221,8 @@ public class StreamParser implements Parser {
 			return parseRoundPar();
         case GET:
             return parseGet();
+		case OPT:
+			return parseOpt();
 		}
 	}
 
@@ -227,6 +231,11 @@ public class StreamParser implements Parser {
 		consume(NUM); // or tryNext();
 		return new IntLiteral(val);
 	}
+
+    private Opt parseOpt() throws ParserException {
+        consume(OPT);
+        return new Opt(parseExp());
+    }
 
 	private BoolLiteral parseBool() throws ParserException {
 		boolean val = tokenizer.boolValue();
@@ -254,8 +263,7 @@ public class StreamParser implements Parser {
 
 	private get parseGet() throws ParserException{
 	    consume(GET);
-	    Exp exp = parseExp();
-	    return new get(exp);
+	    return new get(parseExp());
     }
 	private Exp parseRoundPar() throws ParserException {
 		consume(OPEN_PAR); // or tryNext();
