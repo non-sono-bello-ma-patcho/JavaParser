@@ -154,12 +154,8 @@ public class StreamParser implements Parser {
 		Exp exp = null;
 		if(tokenizer.tokenType() == NUM) {
 		    tryNext();
-            System.err.println("token dopo trynext = "+ tokenizer.tokenString());
-
             if(tokenizer.tokenType() == EQUAL) {
-                System.err.println("sono qui prima della parseequal()");
                 parseEqual();
-                System.err.println("sono qui");
             }
 		    else {
                 exp = parseAdd();
