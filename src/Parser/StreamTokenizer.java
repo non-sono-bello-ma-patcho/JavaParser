@@ -25,13 +25,11 @@ public class StreamTokenizer implements Tokenizer {
 		// remark: groups must correspond to the ordinal of the corresponding
 		// token type
 		final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 1
-		final String numRegEx = "(0|[1-9][0-9]*)"; // group 2   new regex or num regex???????
-        final String boolRegex = "(true) | (false)";
+		final String numRegEx = "(0[bB][01]+) | ([1-9][0-9]*|0)"; // group 2   new regex or num regex???????
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
-		final String binaryRegEx = "(0[bB][0-1]+)"; //group 4  examples  0b0101010  0B10101010
-		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]";
+		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]"; //4
         /* forse bisogna aggiungere qui la regex per le binary expr*/
-		regEx = identRegEx + "|" + numRegEx + "|" + boolRegex + "|" + skipRegEx + "|" + binaryRegEx + "|" + symbolRegEx;
+		regEx = identRegEx + "|" + numRegEx  + "|" + skipRegEx + "|" + symbolRegEx;
 	}
 /*
 operatori unari prefissi ! , opt , empty , def e get Tutti gli operatori unari prefissi hanno la precedenza sugli operatori
@@ -81,34 +79,36 @@ binari infissi.*/
 
 	private void checkType() {
 		tokenString = scanner.group();
+
+		System.err.println("Tokenstring is: "+tokenString+"Tokentype is: "+symbols.get(tokenString));
+
 		if (scanner.group(IDENT.ordinal()) != null) { // IDENT or a keyword
 			tokenType = keywords.get(tokenString);
 			if (tokenType == null)
 				tokenType = IDENT;
+			if(tokenType == BOOLEAN)
+				boolValue = Boolean.parseBoolean(tokenString);
 			return;
 		}
 		if (scanner.group(NUM.ordinal()) != null) { // NUM
 			tokenType = NUM;
-			intValue = Integer.parseInt(tokenString);
+
+			intValue = Integer.parseInt(base()==2?tokenString : tokenString.substring(2), base());
 			return;
 		}
-		if (scanner.group(BINARY.ordinal()) != null) { // NUM
-			tokenType = NUM;
-			intValue = Integer.parseInt(tokenString.substring(2), 2);
-			return;
-		}
-		if (scanner.group(BOOLEAN.ordinal()) != null) { // NUM
-			tokenType = BOOLEAN;
-			boolValue = Boolean.parseBoolean(tokenString);
-			return;
-		}
+
 		if (scanner.group(SKIP.ordinal()) != null) { // SKIP
 			tokenType = SKIP;
 			return;
 		}
+
 		tokenType = symbols.get(tokenString); // a symbol
 		if (tokenType == null)
 			throw new AssertionError("Fatal error");
+	}
+
+	private int base(){
+		return tokenString.indexOf('b')>=0 || tokenString.indexOf('B')>=0 ? 2 : 10;
 	}
 
 	@Override
