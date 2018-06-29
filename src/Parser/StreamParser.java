@@ -3,7 +3,6 @@ package Parser;
 import static Parser.TokenType.*;
 import Parser.ast.*;
 
-import java.io.IOException;
 
 /*
 Prog ::= StmtSeq 'EOF'

@@ -173,10 +173,14 @@ public class TypeCheck implements Visitor<Type> {
 	}
 
 	@Override
-	public Type visitGet(Exp exp){ return null;} //TODO
-
+	public Type visitGet(Exp exp){
+	    Type type = exp.accept(this);
+	    type.checkOpt();
+	    return type;
+	}
+	
 	@Override
-	public Type visitOpt(Exp exp){ return null;}
+	public Type visitOpt(Exp exp){ return new OpType(exp.accept(this));}
 
 	@Override
 	public Type visitIdent(String name) {
