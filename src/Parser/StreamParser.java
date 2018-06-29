@@ -219,7 +219,14 @@ public class StreamParser implements Parser {
 			return parseRoundPar();
         case GET:
             return parseGet();
+		case DEF:
+			return parseDef();
 		}
+	}
+
+	private Def parseDef() throws ParserException {
+		consume(DEF);
+		return new Def(parseExp());
 	}
 
 	private IntLiteral parseNum() throws ParserException {
