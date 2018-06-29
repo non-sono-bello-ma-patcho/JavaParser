@@ -82,6 +82,11 @@ public class Eval implements Visitor<Value> {
 		return null;
 	}
 
+	@Override
+	public Value visitDef(Exp exp) {
+		return null;
+	}
+
 	// dynamic semantics for sequences of statements
 	// no value returned by the visitor
 
@@ -157,8 +162,21 @@ public class Eval implements Visitor<Value> {
 	}
 
 	@Override
+	public Value visitGet(Exp exp) {
+		Value value = exp.accept(this);
+		if(value.asOpt().isEmpty())
+			throw new EvaluatorException("The value is empty cannot get anything!");
+		return value.asOpt().getValue();
+	}
+
+	@Override
 	public Value visitIdent(String name) {
 		return env.lookup(new SimpleIdent(name));
+	}
+
+	@Override
+	public Value visitOpt(Exp exp) {
+		return new OptValue(exp.accept(this));
 	}
 
 	// dynamic semantics of sequences of expressions
