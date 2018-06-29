@@ -221,15 +221,14 @@ public class StreamParser implements Parser {
 
     private Empty parseEmpty() throws ParserException{
         consume(EMPTY);
-        return new Empty(parseExp());
+        return new Empty(parseAtom());
     }
 
 	private Exp parseEqual() throws ParserException {
 		Exp sx = parsePrefix();
-		if(tokenizer.tokenType()==EQUAL) {
+		while(tokenizer.tokenType()==EQUAL) {
             consume(EQUAL);
-            System.err.println("ParseEqual: " + sx.toString());
-            return new Equals(sx, parsePrefix());
+            sx = new Equals(sx, parsePrefix());
         }
         return sx;
 	}
@@ -242,12 +241,12 @@ public class StreamParser implements Parser {
 
     private Opt parseOpt() throws ParserException {
         consume(OPT);
-        return new Opt(parseExp());
+        return new Opt(parseAtom());
     }
 
     private Def parseDef() throws ParserException {
 	    consume(DEF);
-	    return new Def(parseExp());
+	    return new Def(parseAtom());
     }
 
 	private BoolLiteral parseBool() throws ParserException {

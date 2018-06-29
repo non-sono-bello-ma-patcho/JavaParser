@@ -69,16 +69,15 @@ public class Eval implements Visitor<Value> {
 	@Override
 	public Value visitIfStmt(Exp exp, StmtSeq stmt) {
 		if(exp.accept(this).asBool())
-		    stmt.accept(this);
+		    nestNdo(stmt);
 		return null;
 	}
 
 	@Override
 	public Value visitIfElseStmt(Exp exp, StmtSeq stmtIf, StmtSeq stmtElse) {
 		if(exp.accept(this).asBool())
-		    stmtIf.accept(this);
-		else stmtElse.accept(this);
-
+		    nestNdo(stmtIf);
+		else nestNdo(stmtElse);
 		return null;
 	}
 
