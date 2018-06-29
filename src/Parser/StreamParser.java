@@ -223,6 +223,8 @@ public class StreamParser implements Parser {
             return parseGet();
 		case OPT:
 			return parseOpt();
+		case DEF:
+			return parseDef();
 		}
 	}
 
