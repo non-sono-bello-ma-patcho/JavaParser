@@ -275,7 +275,7 @@ public class StreamParser implements Parser {
 
 	private get parseGet() throws ParserException{
 	    consume(GET);
-	    return new get(parseExp());
+	    return new get(parseAtom());
     }
 	private Exp parseRoundPar() throws ParserException {
 		consume(OPEN_PAR); // or tryNext();
