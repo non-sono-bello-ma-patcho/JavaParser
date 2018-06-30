@@ -65,7 +65,7 @@ public class StreamParser implements Parser {
 	}
 
 	private ExpSeq parseExpSeq() throws ParserException {
-		Exp exp = parseExp();
+		Exp exp = parseAnd();
 		if (tokenizer.tokenType() == EXP_SEP) {
 			tryNext();
 			return new MoreExp(exp, parseExpSeq());
@@ -94,20 +94,20 @@ public class StreamParser implements Parser {
 
 	private PrintStmt parsePrintStmt() throws ParserException {
 		consume(PRINT); // or tryNext();
-		return new PrintStmt(parseExp());
+		return new PrintStmt(parseAnd());
 	}
 
 	private VarStmt parseVarStmt() throws ParserException {
 		consume(VAR); // or tryNext();
 		Ident ident = parseIdent();
 		consume(ASSIGN);
-		return new VarStmt(ident, parseExp());
+		return new VarStmt(ident, parseAnd());
 	}
 
 	private AssignStmt parseAssignStmt() throws ParserException {
 		Ident ident = parseIdent();
 		consume(ASSIGN);
-		return new AssignStmt(ident, parseExp());
+		return new AssignStmt(ident, parseAnd());
 	}
 
 	private DoWhileStmt parseDoWhileStmt() throws  ParserException{
@@ -123,7 +123,7 @@ public class StreamParser implements Parser {
 		consume(FOR); // or tryNext();
 		Ident ident = parseIdent();
 		consume(IN);
-		Exp exp = parseExp();
+		Exp exp = parseAnd();
 		consume(OPEN_BLOCK);
 		StmtSeq stmts = parseStmtSeq();
 		consume(CLOSE_BLOCK);
@@ -133,7 +133,7 @@ public class StreamParser implements Parser {
 	private IfStmt parseIfStmt() throws ParserException{
 	    consume(IF);
 	    consume(OPEN_PAR);
-	    Exp exp = parseExp(); //TODO: boolexp
+	    Exp exp = parseAnd(); //TODO: boolexp
 	    consume(CLOSE_PAR);
         consume(OPEN_BLOCK);
 	    StmtSeq Firststmts = parseStmtSeq();
@@ -148,7 +148,7 @@ public class StreamParser implements Parser {
         return new IfStmt(exp,Firststmts); //TODO: boolexp
     }
 
-    private Exp parsePrefix() throws ParserException{
+    private Exp parseExp() throws ParserException{
 	    Exp e = parseAdd();
 	    while(tokenizer.tokenType() == PREFIX){
 	        tryNext();
@@ -157,11 +157,11 @@ public class StreamParser implements Parser {
 	    return e;
     }
 
-	private Exp parseExp() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
+	private Exp parseAnd() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
         Exp exp = parseEqual();
         while (tokenizer.tokenType() == AND) {
             consume(AND);
-            exp = new And(exp, parseExp());
+            exp = new And(exp, parseAnd());
         }
         return exp;
 	}
@@ -216,7 +216,7 @@ public class StreamParser implements Parser {
 
 	private Not parseNot() throws ParserException{
 	    consume(NOT);
-	    return new Not(parseExp());
+	    return new Not(parseAnd());
     }
 
     private Empty parseEmpty() throws ParserException{
@@ -225,10 +225,10 @@ public class StreamParser implements Parser {
     }
 
 	private Exp parseEqual() throws ParserException {
-		Exp sx = parsePrefix();
+		Exp sx = parseExp();
 		while(tokenizer.tokenType()==EQUAL) {
             consume(EQUAL);
-            sx = new Equals(sx, parsePrefix());
+            sx = new Equals(sx, parseExp());
         }
         return sx;
 	}
@@ -279,7 +279,7 @@ public class StreamParser implements Parser {
     }
 	private Exp parseRoundPar() throws ParserException {
 		consume(OPEN_PAR); // or tryNext();
-		Exp exp = parseExp();
+		Exp exp = parseAnd();
 		consume(CLOSE_PAR);
 		return exp;
 	}
