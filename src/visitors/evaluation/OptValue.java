@@ -24,6 +24,7 @@ public class OptValue  implements Value{
     public void setEmpty(boolean v) {
         this.empty=v;
     }
+
     public boolean isEmpty() {
         return this.empty;
     }
