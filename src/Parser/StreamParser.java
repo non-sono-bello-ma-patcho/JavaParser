@@ -204,7 +204,7 @@ public class StreamParser implements Parser {
 
 	private Not parseNot() throws ParserException{
 	    consume(NOT);
-	    return new Not(parseAnd());
+	    return new Not(parseAtom());
     }
 
     private Empty parseEmpty() throws ParserException{
@@ -213,7 +213,7 @@ public class StreamParser implements Parser {
     }
 
 	private Exp parseEqual() throws ParserException {
-		Exp sx = parseExp();
+		Exp sx = parseAtom();
 		while(tokenizer.tokenType()==EQUAL) {
             consume(EQUAL);
             sx = new Equals(sx, parseExp());
