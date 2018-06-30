@@ -133,7 +133,7 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitEquals(Exp left, Exp right) {
-		checkBinOp(left, right, left.accept(this)); // si può implementare come unario?
+		left.accept(this).checkEqual(right.accept(this));
 		return BOOL;
 	}
 

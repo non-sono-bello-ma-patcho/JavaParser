@@ -5,12 +5,9 @@ import static java.util.Objects.requireNonNull;
 public class OptType implements Type {
 
     private final Type elemType;
-    private  boolean empty=false;
-    public  String TypeName;
 
     public OptType(Type elemType) {
         this.elemType = requireNonNull(elemType);
-        this.TypeName=elemType.toString();
     }
 
     public Type getElemType() {
@@ -23,7 +20,7 @@ public class OptType implements Type {
             return true;
         if (!(obj instanceof OptType))
             return false;
-        return elemType.equals(obj);
+        return elemType.equals(((OptType) obj).elemType);
     }
 
     @Override
@@ -33,6 +30,6 @@ public class OptType implements Type {
 
     @Override
     public String toString() {
-        return TypeName + " OPT";
+        return elemType.toString() + " OPT";
     }
 }
