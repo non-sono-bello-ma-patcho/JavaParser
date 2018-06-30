@@ -9,13 +9,13 @@ public class IfStmt implements Stmt {
     private final StmtSeq elseStmt;
 
     public IfStmt(Exp exp, StmtSeq block) {
-        this.exp = requireNonNull(exp); //TODO boolexp
+        this.exp = requireNonNull(exp);
         this.block = requireNonNull(block);
         this.elseStmt = null;
     }
     
     public IfStmt(Exp exp, StmtSeq block, StmtSeq elseStmt){
-        this.exp = requireNonNull(exp); //TODO boolexp
+        this.exp = requireNonNull(exp);
         this.block = requireNonNull(block);
         this.elseStmt = requireNonNull(elseStmt);
     }

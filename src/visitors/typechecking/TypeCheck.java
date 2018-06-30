@@ -54,7 +54,7 @@ public class TypeCheck implements Visitor<Type> {
 
 	@Override
 	public Type visitDoWhileStmt(Exp exp, StmtSeq block) {
-		env.enterLevel(); // TODO
+		env.enterLevel();
 		block.accept(this);
 		env.exitLevel();
 		exp.accept(this);

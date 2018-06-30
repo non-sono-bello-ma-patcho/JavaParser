@@ -17,7 +17,7 @@ public class BoolValue  extends PrimValue<Boolean>  {
 
     @Override
     public boolean asBool() {
-        return value; //ricordarsi poi di fare cast quando chiamo il metodo. narrowing
+        return value;
     }
 
 

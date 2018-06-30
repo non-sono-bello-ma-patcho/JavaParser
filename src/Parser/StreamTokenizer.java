@@ -1,6 +1,6 @@
 package Parser;
 
-import visitors.evaluation.Value;
+
 
 import static Parser.TokenType.*;
 
@@ -28,12 +28,9 @@ public class StreamTokenizer implements Tokenizer {
 		final String numRegEx = "(0[bB][01]+|[1-9][0-9]*|0)"; // group 2
 		final String skipRegEx = "(\\s+|//.*)"; // group 3
 		final String symbolRegEx = "\\+|\\*|!|==|=|&&|\\(|\\)|;|,|\\{|\\}|-|::|:|\\[|\\]"; //4
-        /* forse bisogna aggiungere qui la regex per le binary expr*/
 		regEx = identRegEx + "|" + numRegEx  + "|" + skipRegEx + "|" + symbolRegEx;
 	}
-/*
-operatori unari prefissi ! , opt , empty , def e get Tutti gli operatori unari prefissi hanno la precedenza sugli operatori
-binari infissi.*/
+
 
 
 	static {
@@ -41,8 +38,8 @@ binari infissi.*/
 		keywords.put("print", PRINT);
 		keywords.put("var", VAR);
 		/*parte aggiunta da me */
-		keywords.put("true",BOOLEAN); // TODO: check bin operation (typecheck)
-		keywords.put("false",BOOLEAN); // TODO: same thing as above
+		keywords.put("true",BOOLEAN);
+		keywords.put("false",BOOLEAN);
 		keywords.put("opt",OPT);
 		keywords.put("empty",EMPTY);
 		keywords.put("get",GET);
@@ -68,7 +65,6 @@ binari infissi.*/
 		symbols.put("-", MINUS);
 		symbols.put("[", OPEN_LIST);
 		symbols.put("]", CLOSE_LIST);
-		/*parte aggiunta da me*/
 		symbols.put("==", EQUAL);
 		symbols.put("&&", AND);
 		symbols.put("!", NOT);

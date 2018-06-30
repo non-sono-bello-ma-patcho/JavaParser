@@ -4,18 +4,6 @@ import static Parser.TokenType.*;
 import Parser.ast.*;
 
 
-/*
-Prog ::= StmtSeq 'EOF'
- StmtSeq ::= Stmt (';' StmtSeq)?
- Stmt ::= 'var'? ID '=' Exp | 'print' Exp |  'for' ID ':' Exp '{' StmtSeq '}' | if (Exp) {StmtSeq} (else {StmtSeq})? | do {StmtSeq} while (Exp)
- ExpSeq ::= Exp (',' ExpSeq)?
- Exp ::= Add ('::' Exp)? | Exp && Exp | Exp == Exp | ! Exp | opt Exp | empty Exp | def Exp | get Exp |true |false|binaryExpr
- Add ::= Mul ('+' Mul)*
- Mul::= Atom ('*' Atom)*
- Atom ::= '-' Atom | '[' ExpSeq ']' | NUM | ID | '(' Exp ')'
-
-*/
-
 public class StreamParser implements Parser {
 	private final Tokenizer tokenizer;
 
@@ -133,7 +121,7 @@ public class StreamParser implements Parser {
 	private IfStmt parseIfStmt() throws ParserException{
 	    consume(IF);
 	    consume(OPEN_PAR);
-	    Exp exp = parseAnd(); //TODO: boolexp
+	    Exp exp = parseAnd();
 	    consume(CLOSE_PAR);
         consume(OPEN_BLOCK);
 	    StmtSeq Firststmts = parseStmtSeq();
@@ -143,9 +131,9 @@ public class StreamParser implements Parser {
             consume(OPEN_BLOCK);
             StmtSeq Secondstmts = parseStmtSeq();
             consume(CLOSE_BLOCK);
-            return new IfStmt(exp,Firststmts,Secondstmts); //TODO boolexp
+            return new IfStmt(exp,Firststmts,Secondstmts);
         }
-        return new IfStmt(exp,Firststmts); //TODO: boolexp
+        return new IfStmt(exp,Firststmts);
     }
 
     private Exp parseExp() throws ParserException{
@@ -157,7 +145,7 @@ public class StreamParser implements Parser {
 	    return e;
     }
 
-	private Exp parseAnd() throws ParserException { //TODO: capire come distinguere quando usare aritmetici e quando logici...
+	private Exp parseAnd() throws ParserException {
         Exp exp = parseEqual();
         while (tokenizer.tokenType() == AND) {
             consume(AND);
