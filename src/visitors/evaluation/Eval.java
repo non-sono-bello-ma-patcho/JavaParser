@@ -198,6 +198,8 @@ public class Eval implements Visitor<Value> {
 		return new ListValue(first.accept(this), rest.accept(this).asList());
 	}
 
+	// Aux functions
+
 	private void nestNdo(StmtSeq block){
 		env.enterLevel();
 		block.accept(this);
