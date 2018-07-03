@@ -213,7 +213,7 @@ public class StreamParser implements Parser {
     }
 
 	private Exp parseEqual() throws ParserException {
-		Exp sx = parseAtom();
+		Exp sx = parseExp();
 		while(tokenizer.tokenType()==EQUAL) {
             consume(EQUAL);
             sx = new Equals(sx, parseExp());
